@@ -35,11 +35,24 @@ import java.util.concurrent.ExecutionException;
 import uk.co.appoly.arcorelocation.LocationMarker;
 import uk.co.appoly.arcorelocation.LocationScene;
 
+import static java.lang.Math.cos;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "666";
     private static final double MIN_OPENGL_VERSION = 3.0;
     ArFragment arFragment;
     ModelRenderable testModel;
+    private double mLant = 55.741593;
+    private double mLong = 49.221140;
+    private double pointLant = 55.741623;
+    private double pointLong = 49.221095;
+    private double northDif;
+    private double coordNorth;
+    private double longDif;
+    private double coordLong;
+
+    private static final double LATITUDE_COEF = 111134.861111;
+    private static final double LONGITUDE_COEF = 111321.377778;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-
-
-
 
 
         ModelRenderable.builder()
@@ -75,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 */
+        northDif = pointLant - mLant;
+        coordNorth = northDif*LATITUDE_COEF;
+        Log.i("666", "northDif: " + northDif);
+
+        longDif = pointLong - mLong;
+        coordLong = cos(mLant)*LONGITUDE_COEF*longDif;
+
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                     if (testModel == null) {
@@ -91,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                     model.setParent(anchorNode);
                     model.setRenderable(testModel);
                     model.select();
+                    model.setWorldPosition(new Vector3((float) coordLong, -1.5f,(float) coordNorth));
+                    Log.i("666", model.getWorldPosition().toString());
 
                     /*Log.i("Coordi", model.getWorldPosition().toString());
                     Toast.makeText(this, "" + model.getWorldPosition().toString(), Toast.LENGTH_SHORT).show();
