@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 */
         northDif = pointLant - mLant;
         coordNorth = northDif*LATITUDE_COEF;
-        Log.i("666", "northDif: " + northDif);
+        //Log.i("666", "northDif: " + northDif);
 
         longDif = pointLong - mLong;
         coordLong = cos(mLant)*LONGITUDE_COEF*longDif;
@@ -147,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+
+    public void showToast() {
+
     }
 
 
