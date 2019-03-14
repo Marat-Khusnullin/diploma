@@ -29,9 +29,13 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uk.co.appoly.arcorelocation.LocationMarker;
 import uk.co.appoly.arcorelocation.LocationScene;
 
@@ -62,7 +66,19 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
+        NetworkService.getInstance().getCityWebApi().getWaterObjects(55.790612, 49.123078)
+                .enqueue(new Callback<List<WaterObject>>() {
+                    @Override
+                    public void onResponse(Call<List<WaterObject>> call, Response<List<WaterObject>> response) {
+                        Toast.makeText(MainActivity.this, "ПРИШЛО", Toast.LENGTH_SHORT).show();
+                        Log.i("666", "" + response.body().get(0).getStartCoordinateX() + ", " + response.body().get(0).getEndCoordinateY());
+                    }
 
+                    @Override
+                    public void onFailure(Call<List<WaterObject>> call, Throwable t) {
+                        Log.i("First object", "ет не то");
+                    }
+                });
 
         ModelRenderable.builder()
                 .setSource(this, Uri.parse("untitled.sfb"))

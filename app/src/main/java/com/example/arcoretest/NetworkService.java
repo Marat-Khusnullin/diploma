@@ -1,6 +1,7 @@
 package com.example.arcoretest;
 
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
 
@@ -8,10 +9,21 @@ public class NetworkService {
     private static final String BASE_URL = "https://diploma-engineering-comm.herokuapp.com";
     private Retrofit mRetrofit;
 
+    private NetworkService() {
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
     public static NetworkService getInstance() {
         if (mInstance == null) {
             mInstance = new NetworkService();
         }
         return mInstance;
+    }
+
+    public CityWebApi getCityWebApi() {
+        return mRetrofit.create(CityWebApi.class);
     }
 }
