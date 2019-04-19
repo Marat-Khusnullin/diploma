@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
@@ -26,12 +27,15 @@ import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,14 +50,18 @@ public class MainActivity extends AppCompatActivity {
     private static final double MIN_OPENGL_VERSION = 3.0;
     ArFragment arFragment;
     ModelRenderable testModel;
-    private double mLant = 55.741593;
-    private double mLong = 49.221140;
+    ModelRenderable tubeModel;
+    ViewRenderable testViewRenderable;
+    private double mLant = 55.790612;
+    private double mLong = 49.123078;
     private double pointLant = 55.741623;
     private double pointLong = 49.221095;
     private double northDif;
     private double coordNorth;
     private double longDif;
     private double coordLong;
+    private AnchorNode anchorNode;
+    private MainActivityPresenter mainActivityPresenter;
 
     private static final double LATITUDE_COEF = 111134.861111;
     private static final double LONGITUDE_COEF = 111321.377778;
@@ -66,20 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-        NetworkService.getInstance().getCityWebApi().getWaterObjects(55.790612, 49.123078)
-                .enqueue(new Callback<List<WaterObject>>() {
-                    @Override
-                    public void onResponse(Call<List<WaterObject>> call, Response<List<WaterObject>> response) {
-                        Toast.makeText(MainActivity.this, "ПРИШЛО", Toast.LENGTH_SHORT).show();
-                        Log.i("666", "" + response.body().get(0).getStartCoordinateX() + ", " + response.body().get(0).getEndCoordinateY());
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<WaterObject>> call, Throwable t) {
-                        Log.i("First object", "ет не то");
-                    }
-                });
-
+        mainActivityPresenter = new MainActivityPresenter(this);
         ModelRenderable.builder()
                 .setSource(this, Uri.parse("untitled.sfb"))
                 .build()
@@ -101,12 +97,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 */
-        northDif = pointLant - mLant;
+        /*northDif = pointLant - mLant;
         coordNorth = northDif*LATITUDE_COEF;
-        //Log.i("666", "northDif: " + northDif);
 
         longDif = pointLong - mLong;
-        coordLong = cos(mLant)*LONGITUDE_COEF*longDif;
+        coordLong = cos(mLant)*LONGITUDE_COEF*longDif;*/
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
@@ -116,16 +111,18 @@ public class MainActivity extends AppCompatActivity {
                     /*hitresult.getHitPose().extractTranslation()
                     hitresult.getHitPose().compose(new Pose())*/
                     Anchor anchor = hitresult.createAnchor();
-                    AnchorNode anchorNode = new AnchorNode(anchor);
+                    anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
+                    mainActivityPresenter.activityIsReady();
                     //anchorNode.setWorldPosition(new Vector3(1500, 1500, 1500));
                     //anchorNode.getAnchor().getPose().extractRotation();
-                    TransformableNode model = new TransformableNode(arFragment.getTransformationSystem());
+
+                   /* TransformableNode model = new TransformableNode(arFragment.getTransformationSystem());
                     model.setParent(anchorNode);
                     model.setRenderable(testModel);
                     model.select();
                     model.setWorldPosition(new Vector3((float) coordLong, -1.5f,(float) coordNorth));
-                    Log.i("666", model.getWorldPosition().toString());
+                    Log.i("666", model.getWorldPosition().toString());*/
 
                     /*Log.i("Coordi", model.getWorldPosition().toString());
                     Toast.makeText(this, "" + model.getWorldPosition().toString(), Toast.LENGTH_SHORT).show();
@@ -135,13 +132,10 @@ public class MainActivity extends AppCompatActivity {
                     model1.setParent(anchorNode);
                     model1.setRenderable(testModel);
                     model1.select();
-                    model1.setWorldPosition(new Vector3(0.0000001f,0.0000001f,3.0000001f));*/
+                    model1.setWorldPosition(new Vector3(0.0000001f,0.0000001f,0.0000001f));*/
                 }
         );
     }
-
-
-
 
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
@@ -167,6 +161,69 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void showToast() {
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setWaterObjectsToVrMap(List<WaterObject> list) {
+        TransformableNode waterObjectModel;
+        TransformableNode waterObjectModel1;
+        for (int i = 0; i <list.size(); i++) {
+            final int z = i;
+            waterObjectModel = new TransformableNode(arFragment.getTransformationSystem());
+            waterObjectModel.setParent(anchorNode);
+            waterObjectModel.setRenderable(testModel);
+            waterObjectModel.select();
+
+            northDif = list.get(i).getStartCoordinateX() - mLant;
+            coordNorth = northDif * LATITUDE_COEF;
+
+            longDif = list.get(i).getStartCoordinateY() - mLong;
+            coordLong = cos(mLant)*LONGITUDE_COEF*longDif;
+            Vector3 vector3 = new Vector3((float) coordLong, -1.5f,(float) coordNorth);
+            waterObjectModel.setWorldPosition(new Vector3((float) coordLong, -1.5f,(float) coordNorth));
+
+            Log.i("DATA1", waterObjectModel.getWorldPosition().toString());
+
+            northDif = list.get(i).getEndCoordinateX() - mLant;
+            coordNorth = northDif*LATITUDE_COEF;
+
+            longDif = list.get(i).getEndCoordinateY() - mLong;
+            coordLong = cos(mLant)*LONGITUDE_COEF*longDif;
+
+            waterObjectModel1 = new TransformableNode(arFragment.getTransformationSystem());
+            waterObjectModel.setParent(anchorNode);
+            waterObjectModel.setRenderable(testModel);
+            waterObjectModel.select();
+            waterObjectModel1.setWorldPosition(new Vector3((float) coordLong, -0.5f,(float) coordNorth));
+
+
+//Тут добавляю табличку с инфой ёклмн
+            TransformableNode infoNode;
+
+            ViewRenderable.builder()
+                    .setView(this, R.layout.point_info_layout)
+                    .build().thenAccept(new Consumer<ViewRenderable>() {
+                        @Override
+                        public void accept(ViewRenderable viewRenderable) {
+                            testViewRenderable = viewRenderable;
+                            ((TextView) viewRenderable.getView().findViewById(R.id.water_type)).setText(list.get(z).getType());
+                            ((TextView) viewRenderable.getView().findViewById(R.id.water_depth)).setText("Глубина: " + list.get(z).getDepth());
+                            ((TextView) viewRenderable.getView().findViewById(R.id.water_company)).setText("Обслуживающая организация: " + list.get(z).getOwner());
+                            ((TextView) viewRenderable.getView().findViewById(R.id.water_last_work_name)).setText("Проведенные работы: " + list.get(z).getWorkInfo());
+                            ((TextView) viewRenderable.getView().findViewById(R.id.water_last_work_date)).setText("Дата работ: " + list.get(z).getWorkDate());
+                        }
+                    });
+
+
+            infoNode = new TransformableNode(arFragment.getTransformationSystem());
+            infoNode.setParent(anchorNode);
+            infoNode.setRenderable(testViewRenderable);
+            infoNode.setWorldPosition(vector3);
+            infoNode.select();
+
+
+        }
 
     }
 
