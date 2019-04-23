@@ -5,6 +5,8 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.arcoretest.utils.ObjectsConverter;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +32,9 @@ public class MainActivityPresenter {
                     public void onResponse(Call<List<WaterObject>> call, Response<List<WaterObject>> response) {
                         Toast.makeText(mainActivity, "ПРИШЛО", Toast.LENGTH_SHORT).show();
 
-                        mainActivity.setWaterObjectsToVrMap(response.body());
+
+                        ObjectsConverter objectsConverter = new ObjectsConverter(mainActivity.getzCoord());
+                        mainActivity.setWaterObjectsToVrMap(objectsConverter.convertWaterObjects(response.body()));
                     }
 
                     @Override

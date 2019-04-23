@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +13,52 @@
         android:layout_height="match_parent"
         />
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        >
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/button_electricity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#FFFF00"
+            />
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/button_water"
+            android:layout_below="@id/button_electricity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#328AFB"
+            />
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/button_data"
+            android:layout_below="@+id/button_water"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00DF79"
+            />
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/button_gas"
+            android:layout_below="@+id/button_data"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#000"
+            />
+
+
+
+    </RelativeLayout>
+
+    </RelativeLayout>
 </FrameLayout>
+

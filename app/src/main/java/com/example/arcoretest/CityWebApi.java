@@ -13,4 +13,17 @@ public interface CityWebApi {
     public Call<List<WaterObject>> getWaterObjects(@Header("x_pos") Double myLatitude,
                                                    @Header("y_pos") Double myLongitude);
 
+    /*@GET("/data_communication")
+    public Call<List<DataObject>> getDataObjects(@Header("x_pos") Double myLatitude,
+                                                   @Header("y_pos") Double myLongitude);
+
+    @GET("/gas_communication")
+    public Call<List<GasObject>> getGasObjects(@Header("x_pos") Double myLatitude,
+                                                 @Header("y_pos") Double myLongitude);
+
+    @GET("/electricity_communication")
+    public Call<List<ElectricityObject>> getElectricityObjects(@Header("x_pos") Double myLatitude,
+                                               @Header("y_pos") Double myLongitude);*/
+
+
 }
