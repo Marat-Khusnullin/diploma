@@ -2,7 +2,7 @@ package com.example.arcoretest;
 
 import com.google.ar.sceneform.math.Vector3;
 
-public class LocalWaterObject {
+public class LocalDataObject {
 
     private float xCoorditate;
     private float yCoordinate;
@@ -97,14 +97,5 @@ public class LocalWaterObject {
 
     public void setEndCoordinate(Vector3 endCoordinate) {
         this.endCoordinate = endCoordinate;
-    }
-
-
-    public void setCardInfo(WaterObject object){
-        type = object.getType();
-        owner = object.getOwner();
-        depth = object.getDepth();
-        workInfo = object.getWorkInfo();
-        workDate = object.getWorkDate();
     }
 }

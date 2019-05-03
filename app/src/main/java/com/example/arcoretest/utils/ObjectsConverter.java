@@ -41,7 +41,16 @@ public class ObjectsConverter {
             longDif = waterObjects.get(i).getStartCoordinateY() - mLong;
             coordLong = cos(mLant)*LONGITUDE_COEF * longDif;
 
-            localObject.setFullCoordinate(new Vector3((float) coordLong, -zCoordinate ,(float) coordNorth));
+            localObject.setFullCoordinate(new Vector3((float) coordLong, 0 ,(float) coordNorth));
+
+            northDif = waterObjects.get(i).getEndCoordinateX() - mLant;
+            coordNorth = northDif * LATITUDE_COEF;
+
+            longDif = waterObjects.get(i).getEndCoordinateY() - mLong;
+            coordLong = cos(mLant)*LONGITUDE_COEF * longDif;
+
+            localObject.setEndCoordinate(new Vector3((float) coordLong, 0, (float) coordNorth));
+
             localObject.setCardInfo(waterObjects.get(i));
             localWaterObjects.add(localObject);
 

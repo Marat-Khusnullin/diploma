@@ -30,7 +30,7 @@ public class MainActivityPresenter {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onResponse(Call<List<WaterObject>> call, Response<List<WaterObject>> response) {
-                        Toast.makeText(mainActivity, "ПРИШЛО", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mainActivity, "ПРИШЛО", Toast.LENGTH_SHORT).show();
 
 
                         ObjectsConverter objectsConverter = new ObjectsConverter(mainActivity.getzCoord());
