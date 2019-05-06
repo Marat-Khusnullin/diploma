@@ -237,26 +237,34 @@ public class MainActivity extends AppCompatActivity {
             //Log.i("DATA", list1.get(i).getEndCoordinate() + "");
             infoNodeEnd.select();
 
-            /*MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.BLUE))
+            //Рисую цилиндр
+            MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.BLUE))
                     .thenAccept(
                             material -> {
                                 tubeRenderable =
-                                        ShapeFactory.makeCylinder(0.5f, 2, new Vector3(1f, -1f, 1f), material); });
+                                        ShapeFactory
+                                                .makeCylinder(0.1f, (float) Math.sqrt(
+                                                        Math.pow(list1.get(z).getEndCoordinate().x-list1.get(z).getFullCoordinate().x,2) + Math.pow(list1.get(z).getEndCoordinate().z-list1.get(z).getFullCoordinate().z,2)),
+                                                        new Vector3((list1.get(z).getEndCoordinate().x+list1.get(z).getFullCoordinate().x)/2, -1, (list1.get(z).getEndCoordinate().z+list1.get(z).getFullCoordinate().z)/2), material); });
 
             AnchorNode anchorNode2 = new AnchorNode(anchor);
             anchorNode2.setParent(arFragment.getArSceneView().getScene());
             tubeNode = new TransformableNode(arFragment.getTransformationSystem());
             tubeNode.setParent(anchorNode2);
-            tubeNode.setRenderable(tubeRenderable);*/
+            tubeNode.setRenderable(tubeRenderable);
             /*Quaternion q1 = anchorNode2.getLocalRotation();
             Quaternion q2 = Quaternion.axisAngle(new Vector3(0, 1f, 0f), .2f);
             anchorNode2.setLocalRotation(Quaternion.multiply(q1, q2));
             tubeNode.setLocalRotation(Quaternion.multiply(q1,q2));*/
-
-            //tubeNode.setWorldPosition(list1.get(i).getEndCoordinate());
+            tubeNode.setWorldPosition(list1.get(i).getEndCoordinate());
             //Log.i("DATA", list1.get(i).getEndCoordinate() + "");
-            /*tubeNode.select();
-            Quaternion q1 = anchorNode2.getLocalRotation();
+            tubeNode.select();
+            Vector3 vector = Vector3.subtract(list1.get(i).getEndCoordinate(), list1.get(i).getFullCoordinate());
+            Quaternion lookRotation = Quaternion.lookRotation(vector, Vector3.up());
+// Rotate 90° along the right vector (1, 0, 0)
+            Quaternion worldRotation = Quaternion.multiply(lookRotation, Quaternion.axisAngle(Vector3.right(), 90));
+            tubeNode.setWorldRotation(worldRotation);
+            /*Quaternion q1 = anchorNode2.getLocalRotation();
             Quaternion q2 = Quaternion.axisAngle(new Vector3(0, 1f, 0f), .2f);
 
             tubeNode.setLocalRotation(Quaternion.multiply(q1,q2));*/
