@@ -19,8 +19,8 @@ public class TestData {
         testWaterObjects = new LinkedList<>();
         for (int i = 0; i < 6; i++) {
             LocalWaterObject waterObject = new LocalWaterObject();
-            waterObject.setFullCoordinate(new Vector3((float) new Random().nextInt(6), -1, new Random().nextInt(8)));
-            waterObject.setEndCoordinate(new Vector3((float) new Random().nextInt(6), -1, new Random().nextInt(8)));
+            waterObject.setFullCoordinate(new Vector3((float) new Random().nextInt(6)-3, -1, new Random().nextInt(6)-3));
+            waterObject.setEndCoordinate(new Vector3((float) new Random().nextInt(6)-3, -1, new Random().nextInt(6)-3));
             waterObject.setDepth(new Random().nextInt(30));
             waterObject.setOwner("ЖилСтройОрг");
             waterObject.setType("Вода");
