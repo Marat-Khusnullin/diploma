@@ -19,8 +19,10 @@ public class TestData {
         testWaterObjects = new LinkedList<>();
         for (int i = 0; i < 6; i++) {
             LocalWaterObject waterObject = new LocalWaterObject();
-            waterObject.setFullCoordinate(new Vector3((float) new Random().nextInt(6)-3, -1, new Random().nextInt(6)-3));
-            waterObject.setEndCoordinate(new Vector3((float) new Random().nextInt(6)-3, -1, new Random().nextInt(6)-3));
+            float startX = (float) new Random().nextInt(4) -2;
+            float startY = (float) new Random().nextInt(4) -2;
+            waterObject.setFullCoordinate(new Vector3(startX, -1, startY));
+            waterObject.setEndCoordinate(new Vector3(startX + new Random().nextInt(2)-2, -1, startY + new Random().nextInt(6)-2));
             waterObject.setDepth(new Random().nextInt(30));
             waterObject.setOwner("ЖилСтройОрг");
             waterObject.setType("Вода");
@@ -36,8 +38,10 @@ public class TestData {
         testElectricityObjects = new LinkedList<>();
         for (int i = 0; i < 6; i++) {
             LocalElectricityObject electricityObject = new LocalElectricityObject();
-            electricityObject.setFullCoordinate(new Vector3((float) new Random().nextInt(6) - 6, -1, new Random().nextInt(8)-8));
-            electricityObject.setEndCoordinate(new Vector3((float) new Random().nextInt(6) -6, -1, new Random().nextInt(8)-8));
+            float startX = (float) new Random().nextInt(4) -2;
+            float startY = (float) new Random().nextInt(4) -2;
+            electricityObject.setFullCoordinate(new Vector3(startX, -1, startY));
+            electricityObject.setEndCoordinate(new Vector3(startX + new Random().nextInt(2)-2, -1, startY + new Random().nextInt(6)-2));
             electricityObject.setDepth(new Random().nextInt(30));
             electricityObject.setOwner("ЖилСтройОрг");
             electricityObject.setType("Электричество");

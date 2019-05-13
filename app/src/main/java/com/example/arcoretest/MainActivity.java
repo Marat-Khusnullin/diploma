@@ -24,6 +24,8 @@ import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Trackable;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.HitTestResult;
+import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
@@ -71,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityPresenter mainActivityPresenter;
     private float zCoord;
     private Anchor anchor;
-    private LinkedList currentObjects;
+    private LinkedList<TransformableNode> currentObjects;
+    private boolean isActive = false;
     int z;
 
     Context context = this;
@@ -98,21 +101,43 @@ public class MainActivity extends AppCompatActivity {
         dataButton = findViewById(R.id.button_data);
         gasButton = findViewById(R.id.button_gas);
 
-        currentObjects = new LinkedList();
+        currentObjects = new LinkedList<TransformableNode>();
 
 
         waterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                //testBualt();
-                setWaterObjectsToVrMap(new LinkedList<>());
+                if(!isActive) {
+                    setWaterObjectsToVrMap(new LinkedList<>());
+                    isActive = true;
+                } else {
+                    for (int i = 0; i <currentObjects.size(); i++) {
+                        if(currentObjects.get(i).getScene()!=null)
+                        currentObjects.get(i).getScene().onRemoveChild(currentObjects.get(i).getParent());
+                        currentObjects.get(i).setRenderable(null);
+                    }
+                    currentObjects.clear();
+                    isActive = false;
+                }
             }
         });
 
         electricityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setElectricityObjectsToVrMap(new LinkedList<>());
+                if(!isActive) {
+                    setElectricityObjectsToVrMap(new LinkedList<>());
+                    isActive=true;
+                } else {
+                    for (int i = 0; i <currentObjects.size(); i++) {
+                        if(currentObjects.get(i).getScene()!=null)
+                        currentObjects.get(i).getScene().onRemoveChild(currentObjects.get(i).getParent());
+                        currentObjects.get(i).setRenderable(null);
+                    }
+                    currentObjects.clear();
+                    isActive = false;
+                }
             }
         });
 
@@ -298,6 +323,8 @@ public class MainActivity extends AppCompatActivity {
             TransformableNode infoNodeEnd;
             infoNodeEnd = new TransformableNode(arFragment.getTransformationSystem());
 
+
+
             TransformableNode tubeNode;
 
             ViewRenderable.builder()
@@ -316,9 +343,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-            /*AnchorNode anchorNode = new AnchorNode(anchor);
-            anchorNode.setParent(arFragment.getArSceneView().getScene());
-            infoNodeStart.setParent(anchorNode);*/
+
             //infoNodeStart.setWorldPosition(waterObject.getFullCoordinate());
             //Log.i("DATA", list1.get(i).getEndCoordinate() + "");
             //infoNodeStart.select();
@@ -339,26 +364,35 @@ public class MainActivity extends AppCompatActivity {
                                         ShapeFactory
                                                 .makeCylinder(0.1f, (float) Math.sqrt(
                                                         Math.pow(waterObject.getEndCoordinate().x-waterObject.getFullCoordinate().x,2) + Math.pow(waterObject.getEndCoordinate().z-waterObject.getFullCoordinate().z,2)),
-                                                        new Vector3((waterObject.getEndCoordinate().x+waterObject.getFullCoordinate().x)/2, -1, (waterObject.getEndCoordinate().z+waterObject.getFullCoordinate().z)/2), material); });
+                                                        new Vector3(0, 0, 0), material); });
 
             AnchorNode anchorNode2 = new AnchorNode(anchor);
             anchorNode2.setParent(arFragment.getArSceneView().getScene());
             tubeNode = new TransformableNode(arFragment.getTransformationSystem());
             tubeNode.setParent(anchorNode2);
             tubeNode.setRenderable(tubeRenderable);
+            currentObjects.add(tubeNode);
 
+            tubeNode.setOnTapListener(new Node.OnTapListener() {
+                @Override
+                public void onTap(HitTestResult hitTestResult, MotionEvent motionEvent) {
+                    AnchorNode anchorNode = new AnchorNode(anchor);
+                    anchorNode.setParent(arFragment.getArSceneView().getScene());
+                    infoNodeStart.setParent(anchorNode);
+                    infoNodeStart.setWorldPosition(waterObject.getFullCoordinate());
+                    currentObjects.add(infoNodeStart);
+                }
+            });
 //Возможно эта строчка не нужна.
             //tubeNode.setWorldPosition(waterObject.getEndCoordinate());
 
             //tubeNode.select();
             //Тут вроде разность векторов
             Vector3 vector = Vector3.subtract(waterObject.getEndCoordinate(), waterObject.getFullCoordinate());
-
-            //Quaternion lookRotation = Quaternion.lookRotation(vector, Vector3.up());
-
+            Quaternion lookRotation = Quaternion.lookRotation(vector, Vector3.up());
 // Rotate 90° along the right vector (1, 0, 0)
-            //Quaternion worldRotation = Quaternion.multiply(lookRotation, Quaternion.axisAngle(Vector3.right(), 90));
-            tubeNode.setWorldRotation(Quaternion.axisAngle(getPerpen(vector), 75));
+            Quaternion worldRotation = Quaternion.multiply(lookRotation, Quaternion.axisAngle(Vector3.right(), 90));
+            tubeNode.setWorldRotation(worldRotation);
             tubeNode.setWorldPosition(new Vector3(waterObject.getFullCoordinate().x, -1, waterObject.getFullCoordinate().z));
 
         }
@@ -366,7 +400,90 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setElectricityObjectsToVrMap(List<LocalElectricityObject> list) {
+        TestData testData = new TestData();
+        final List<LocalElectricityObject> list1 = testData.getTestElectricityObjects();
+        for (int i = 0; i <list1.size(); i++) {
+            z = i;
+            LocalElectricityObject waterObject = list1.get(i);
+//Тут добавляю табличку с инфой ёклмн
+            TransformableNode infoNodeStart;
+            infoNodeStart = new TransformableNode(arFragment.getTransformationSystem());
+            TransformableNode infoNodeEnd;
+            infoNodeEnd = new TransformableNode(arFragment.getTransformationSystem());
+
+            TransformableNode tubeNode;
+
+            ViewRenderable.builder()
+                    .setView(this, R.layout.electricity_info_layout)
+                    .build().thenAccept(new Consumer<ViewRenderable>() {
+                @Override
+                public void accept(ViewRenderable viewRenderable) {
+                    infoNodeStart.setRenderable(viewRenderable);
+                    infoNodeEnd.setRenderable(viewRenderable);
+                    ((TextView) viewRenderable.getView().findViewById(R.id.electricity_type)).setText(list1.get(z).getType());
+                    ((TextView) viewRenderable.getView().findViewById(R.id.electricity_depth)).setText("Глубина: " + list1.get(z).getDepth());
+                    ((TextView) viewRenderable.getView().findViewById(R.id.electricity_company)).setText("Обслуживающая организация: " + list1.get(z).getOwner());
+                    ((TextView) viewRenderable.getView().findViewById(R.id.electricity_last_work_name)).setText("Проведенные работы: " + list1.get(z).getWorkInfo());
+                    ((TextView) viewRenderable.getView().findViewById(R.id.electricity_last_work_date)).setText("Дата работ: " + list1.get(z).getWorkDate());
+                }
+            });
+
+
+            MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.YELLOW))
+                    .thenAccept(
+                            material -> {
+                                tubeRenderable =
+                                        ShapeFactory
+                                                .makeCylinder(0.05f, (float) Math.sqrt(
+                                                        Math.pow(waterObject.getEndCoordinate().x-waterObject.getFullCoordinate().x,2) + Math.pow(waterObject.getEndCoordinate().z-waterObject.getFullCoordinate().z,2)),
+                                                        new Vector3(0, 0, 0), material); });
+
+
+            AnchorNode anchorNode2 = new AnchorNode(anchor);
+            anchorNode2.setParent(arFragment.getArSceneView().getScene());
+            tubeNode = new TransformableNode(arFragment.getTransformationSystem());
+            tubeNode.setParent(anchorNode2);
+            tubeNode.setRenderable(tubeRenderable);
+
+            tubeNode.setOnTapListener(new Node.OnTapListener() {
+                @Override
+                public void onTap(HitTestResult hitTestResult, MotionEvent motionEvent) {
+                    AnchorNode anchorNode = new AnchorNode(anchor);
+                    anchorNode.setParent(arFragment.getArSceneView().getScene());
+                    infoNodeStart.setParent(anchorNode);
+                    infoNodeStart.setWorldPosition(waterObject.getFullCoordinate());
+                    currentObjects.add(infoNodeStart);
+                }
+            });
+
+
+
+            currentObjects.add(tubeNode);
+//Возможно эта строчка не нужна.
+            //tubeNode.setWorldPosition(waterObject.getEndCoordinate());
+
+            //tubeNode.select();
+            //Тут вроде разность векторов
+            Vector3 vector = Vector3.subtract(waterObject.getEndCoordinate(), waterObject.getFullCoordinate());
+            Quaternion lookRotation = Quaternion.lookRotation(vector, Vector3.up());
+// Rotate 90° along the right vector (1, 0, 0)
+            Quaternion worldRotation = Quaternion.multiply(lookRotation, Quaternion.axisAngle(Vector3.right(), 90));
+            tubeNode.setWorldRotation(worldRotation);
+            tubeNode.setWorldPosition(new Vector3(waterObject.getFullCoordinate().x, -1, waterObject.getFullCoordinate().z));
+
+
+
+        }
+
+    }
+
+
+    /*@RequiresApi(api = Build.VERSION_CODES.N)
     public void setElectricityObjectsToVrMap(List<LocalElectricityObject> list) {
         TestData testData = new TestData();
         final List<LocalElectricityObject> list1 = testData.getTestElectricityObjects();
@@ -411,7 +528,7 @@ public class MainActivity extends AppCompatActivity {
             //Log.i("DATA", list1.get(i).getEndCoordinate() + "");
             infoNodeEnd.select();
 
-            /*MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.BLUE))
+            *//*MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.BLUE))
                     .thenAccept(
                             material -> {
                                 tubeRenderable =
@@ -421,26 +538,26 @@ public class MainActivity extends AppCompatActivity {
             anchorNode2.setParent(arFragment.getArSceneView().getScene());
             tubeNode = new TransformableNode(arFragment.getTransformationSystem());
             tubeNode.setParent(anchorNode2);
-            tubeNode.setRenderable(tubeRenderable);*/
-            /*Quaternion q1 = anchorNode2.getLocalRotation();
+            tubeNode.setRenderable(tubeRenderable);*//*
+            *//*Quaternion q1 = anchorNode2.getLocalRotation();
             Quaternion q2 = Quaternion.axisAngle(new Vector3(0, 1f, 0f), .2f);
             anchorNode2.setLocalRotation(Quaternion.multiply(q1, q2));
-            tubeNode.setLocalRotation(Quaternion.multiply(q1,q2));*/
+            tubeNode.setLocalRotation(Quaternion.multiply(q1,q2));*//*
 
             //tubeNode.setWorldPosition(list1.get(i).getEndCoordinate());
             //Log.i("DATA", list1.get(i).getEndCoordinate() + "");
-            /*tubeNode.select();
+            *//*tubeNode.select();
             Quaternion q1 = anchorNode2.getLocalRotation();
             Quaternion q2 = Quaternion.axisAngle(new Vector3(0, 1f, 0f), .2f);
 
-            tubeNode.setLocalRotation(Quaternion.multiply(q1,q2));*/
+            tubeNode.setLocalRotation(Quaternion.multiply(q1,q2));*//*
             //tubeNode.getRotationController().setRotationRateDegrees(90);
 
 
 
         }
 
-    }
+    }*/
 
 
 
