@@ -18,8 +18,6 @@ public class MainActivityPresenter {
 
     private MainActivity mainActivity;
 
-
-
     public MainActivityPresenter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
@@ -31,7 +29,6 @@ public class MainActivityPresenter {
                     @Override
                     public void onResponse(Call<List<WaterObject>> call, Response<List<WaterObject>> response) {
                         //Toast.makeText(mainActivity, "ПРИШЛО", Toast.LENGTH_SHORT).show();
-
 
                         ObjectsConverter objectsConverter = new ObjectsConverter(mainActivity.getzCoord());
                         mainActivity.setWaterObjectsToVrMap(objectsConverter.convertWaterObjects(response.body()));

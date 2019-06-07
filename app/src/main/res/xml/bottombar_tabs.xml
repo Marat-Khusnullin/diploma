@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_geo"
+        icon="@drawable/ic_geo_logo"
+        title="Favorites" />
+    <tab
+        id="@+id/tab_main"
+        icon="@drawable/ic_main_logo"
+        title="Объекты" />
+    <tab
+        id="@+id/tab_friends"
+        icon="@drawable/ic_main_logo"
+        title="Friends" />
+</tabs>
