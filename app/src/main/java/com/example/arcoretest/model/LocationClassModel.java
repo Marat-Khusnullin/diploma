@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.arcoretest.ArObjectsFragmentPresenter;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,6 +58,7 @@ public class LocationClassModel {
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
+    private ArObjectsFragmentPresenter arObjectsFragmentPresenter;
 
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
@@ -110,7 +112,8 @@ public class LocationClassModel {
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
                         if(mCurrentLocation!=null){
-                            
+                            setLocationToPresenter(mCurrentLocation);
+                            stopUpdate();
                         }
                            // mapsPresenter.updateLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
                     }
@@ -156,6 +159,16 @@ public class LocationClassModel {
                     }
                 });
     }
+
+    private void setLocationToPresenter(Location location) {
+        arObjectsFragmentPresenter.setLocation(location);
+
+    }
+
+    public void setArObjectsFragmentPresenter(ArObjectsFragmentPresenter presenter){
+        this.arObjectsFragmentPresenter = presenter;
+    }
+
 
 
 }
