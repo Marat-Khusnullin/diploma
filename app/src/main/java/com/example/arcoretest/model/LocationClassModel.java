@@ -78,7 +78,8 @@ public class LocationClassModel {
                 mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                 if(mCurrentLocation!=null){
-
+                    setLocationToPresenter(mCurrentLocation);
+                    stopUpdate();
                 }
                    // mapsPresenter.updateLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
             }
@@ -112,10 +113,10 @@ public class LocationClassModel {
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
                         if(mCurrentLocation!=null){
+                            Toast.makeText(context, "" + mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                             setLocationToPresenter(mCurrentLocation);
-                            stopUpdate();
                         }
-                           // mapsPresenter.updateLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+                           ;
                     }
                 })
                 .addOnFailureListener((Activity) context, new OnFailureListener() {

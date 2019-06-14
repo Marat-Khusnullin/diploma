@@ -1,4 +1,6 @@
-package com.example.arcoretest;
+package com.example.arcoretest.utils;
+
+import com.example.arcoretest.CityWebApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -6,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkService {
 
     private static NetworkService mInstance;
-    private static final String BASE_URL = "https://diploma-engineering-comm.herokuapp.com";
+    private static final String BASE_URL = "https://diploma-server-api.herokuapp.com";
     private Retrofit mRetrofit;
 
     private NetworkService() {

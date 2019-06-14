@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/electricityObjectInfo_layout"
+    android:id="@+id/waterObjectInfo_layout"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="100sp"
     android:layout_height="150sp"
-    android:background="#FFF828">
+    android:background="#008000">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:id="@+id/electricity_type"
+            android:id="@+id/gas_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
             android:text="Информация о точке"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:padding="2dp"/>
 
         <TextView
-            android:id="@+id/electricity_depth"
+            android:id="@+id/gas_depth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
             android:text="Глубина"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:padding="2dp"/>
 
 
         <TextView
-            android:id="@+id/electricity_company"
+            android:id="@+id/gas_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
             android:text="Организация"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:padding="2dp"/>
 
         <TextView
-            android:id="@+id/electricity_last_work_name"
+            android:id="@+id/gas_last_work_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
             android:text="Название работ"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:padding="2dp"/>
 
         <TextView
-            android:id="@+id/electricity_last_work_date"
+            android:id="@+id/gas_last_work_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
             android:text="Дата работ"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:padding="2dp"/>
 
     </LinearLayout>

@@ -1,21 +1,13 @@
 package com.example.arcoretest.utils;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 
 import com.example.arcoretest.LocalWaterObject;
-import com.example.arcoretest.NetworkService;
 import com.example.arcoretest.WaterObject;
 import com.google.ar.sceneform.math.Vector3;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static java.lang.Math.cos;
 
