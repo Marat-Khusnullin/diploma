@@ -1,6 +1,6 @@
 package com.example.arcoretest.utils;
 
-import com.example.arcoretest.CityWebApi;
+import com.example.arcoretest.interfaces.CityWebApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.arcoretest.ArObjectsFragmentPresenter;
+import com.example.arcoretest.interfaces.LocationCallbackInterface;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -59,12 +60,14 @@ public class LocationClassModel {
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
     private ArObjectsFragmentPresenter arObjectsFragmentPresenter;
+    private LocationCallbackInterface callbackInterface;
 
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
 
 
-    public LocationClassModel(Context context) {
+    public LocationClassModel(Context context, LocationCallbackInterface locationCallbackInterface) {
+        callbackInterface = locationCallbackInterface;
         //this.mapsPresenter = mapsPresenter;
         this.context = context;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
@@ -77,7 +80,7 @@ public class LocationClassModel {
                 // location is received
                 mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                if(mCurrentLocation!=null){
+                if(mCurrentLocation!=null) {
                     setLocationToPresenter(mCurrentLocation);
                     stopUpdate();
                 }
@@ -162,7 +165,7 @@ public class LocationClassModel {
     }
 
     private void setLocationToPresenter(Location location) {
-        arObjectsFragmentPresenter.setLocation(location);
+        callbackInterface.updateLocation(location);
 
     }
 

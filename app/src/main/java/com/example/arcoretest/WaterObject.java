@@ -116,5 +116,15 @@ public class WaterObject {
         this.workDate = workDate;
     }
 
+    public void setStartCoordinate(double startCoordinateX, double startCoordinateY) {
+        this.startCoordinateX = startCoordinateX;
+        this.startCoordinateY = startCoordinateY;
+    }
+
+    public void setEndCoordinate(double endCoordinateX, double endCoordinateY) {
+        this.endCoordinateX = endCoordinateX;
+        this.endCoordinateY = endCoordinateY;
+    }
+
 
 }

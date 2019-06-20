@@ -1,8 +1,7 @@
-package com.example.arcoretest;
+package com.example.arcoretest.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -19,11 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.example.arcoretest.R;
 
 import java.io.File;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 public class GeoFragment extends Fragment {
@@ -51,7 +50,6 @@ public class GeoFragment extends Fragment {
 
     @Override
     public void onStart() {
-
         super.onStart();
         sv = getView().findViewById(R.id.surface_view);
         surfaceHolder = sv.getHolder();

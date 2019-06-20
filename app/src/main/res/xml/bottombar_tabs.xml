@@ -9,7 +9,7 @@
         icon="@drawable/ic_main_logo"
         title="Объекты" />
     <tab
-        id="@+id/tab_friends"
+        id="@+id/tab_map"
         icon="@drawable/ic_main_logo"
         title="Friends" />
 </tabs>

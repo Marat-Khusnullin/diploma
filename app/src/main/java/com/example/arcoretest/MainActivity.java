@@ -2,11 +2,7 @@ package com.example.arcoretest;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
@@ -16,6 +12,9 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.example.arcoretest.fragments.ArObjectsFragment;
+import com.example.arcoretest.fragments.GeoFragment;
+import com.example.arcoretest.fragments.GlobalMapFragment;
 import com.google.ar.core.Anchor;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -67,7 +66,11 @@ public class MainActivity extends AppCompatActivity {
                     ArObjectsFragment arObjectsFragment = new ArObjectsFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, arObjectsFragment).commit();
 
+                }
 
+                if(tabId == R.id.tab_map){
+                    GlobalMapFragment globalMapFragment = new GlobalMapFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame,globalMapFragment).commit();
                 }
             }
         });

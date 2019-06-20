@@ -1,4 +1,4 @@
-package com.example.arcoretest;
+package com.example.arcoretest.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.arcoretest.R;
 
 public class PictureFragment extends Fragment {
 
@@ -41,89 +43,6 @@ public class PictureFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*windowwidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
-        windowheight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
-        distanceImage = (ImageView) getActivity().findViewById(R.id.iv_distance);
-
-        showPix = (TextView) getView().findViewById(R.id.showPix);
-        topView = getView().findViewById(R.id.view_top);
-        relativeLayout_top = (RelativeLayout) getView().findViewById(R.id.rl_top);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) relativeLayout_top.getLayoutParams();
-        layoutParams.topMargin = windowheight/3;
-        relativeLayout_top.setLayoutParams(layoutParams);
-
-
-        relativeLayout_bottom = (RelativeLayout) getView().findViewById(R.id.rl_bottom);
-        RelativeLayout.LayoutParams layoutParamsBottom = (RelativeLayout.LayoutParams) relativeLayout_bottom.getLayoutParams();
-        layoutParamsBottom.topMargin = windowheight - windowheight/3;
-        relativeLayout_bottom.setLayoutParams(layoutParamsBottom);
-        //setImage();
-
-
-
-
-
-        relativeLayout_top.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) relativeLayout_top.getLayoutParams();
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        int x_cord = (int) event.getRawX();
-                        int y_cord = (int) event.getRawY();
-
-                        if (x_cord > windowwidth) {
-                            x_cord = windowwidth;
-                        }
-                        if (y_cord > windowheight/2) {
-                            y_cord = windowheight/2;
-                        }
-
-                        layoutParams.topMargin = y_cord - 1;
-                        top = layoutParams.topMargin;
-                        relativeLayout_top.setLayoutParams(layoutParams);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-
-
-        relativeLayout_bottom.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) relativeLayout_bottom.getLayoutParams();
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        int x_cord = (int) event.getRawX();
-                        int y_cord = (int) event.getRawY();
-
-                        if (x_cord > windowwidth) {
-                            x_cord = windowwidth;
-                        }
-                        if (y_cord > windowheight) {
-                            y_cord = windowheight;
-                        } else {
-                            if (y_cord < windowheight/2)
-                                y_cord = windowheight/2;
-                        }
-
-                        layoutParams.topMargin = y_cord - 1;
-                        bot = layoutParams.topMargin;
-                        relativeLayout_bottom.setLayoutParams(layoutParams);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });*/
 
     }
 

@@ -1,4 +1,6 @@
-package com.example.arcoretest;
+package com.example.arcoretest.interfaces;
+
+import com.example.arcoretest.WaterObject;
 
 import java.util.List;
 

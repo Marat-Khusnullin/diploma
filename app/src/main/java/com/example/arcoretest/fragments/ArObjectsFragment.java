@@ -1,4 +1,4 @@
-package com.example.arcoretest;
+package com.example.arcoretest.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +15,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.arcoretest.ArObjectsFragmentPresenter;
+import com.example.arcoretest.LocalDataObject;
+import com.example.arcoretest.LocalElectricityObject;
+import com.example.arcoretest.LocalGasObject;
+import com.example.arcoretest.LocalWaterObject;
+import com.example.arcoretest.R;
+import com.example.arcoretest.TestData;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
@@ -319,7 +326,7 @@ public class ArObjectsFragment extends Fragment {
 
 
 
-            MaterialFactory.makeOpaqueWithColor(getActivity(), new Color(android.graphics.Color.BLACK))
+            MaterialFactory.makeOpaqueWithColor(getActivity(), new Color(android.graphics.Color.GREEN))
                     .thenAccept(
                             material -> {
                                 tubeRenderableData =
@@ -388,7 +395,7 @@ public class ArObjectsFragment extends Fragment {
 
 
 
-            MaterialFactory.makeOpaqueWithColor(getActivity(), new Color(android.graphics.Color.GREEN))
+            MaterialFactory.makeOpaqueWithColor(getActivity(), new Color(android.graphics.Color.BLACK))
                     .thenAccept(
                             material -> {
                                 tubeRenderableGas =
